@@ -42,8 +42,8 @@ def monitor_ground_altitude():
     aq = None
     state = "menu"
 
-    logging.info("🔍 Monitorando estado do simulador com base em GROUND_ALTITUDE...")
-    print("🔍 Monitorando estado do simulador com base em GROUND_ALTITUDE...")
+    logging.info("🔍 Monitorando estado do simulador...")
+    print("🔍 Monitorando estado do simulador...")
 
     while True:
         if sm is None or aq is None:
