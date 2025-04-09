@@ -41,8 +41,10 @@ O **MSFSStateModifier** é um sistema desenvolvido em **Python** para o **Micros
   - Usa `%LOCALAPPDATA%\MSFSStateModifier` para evitar erros de permissão
 
 - 📝 **Sistema de logs**
-  - Logs separados para o monitorador e para o modificador
-  - Salvos em local seguro com permissão de escrita
+  - Logs separados para o monitorador (`msfs-state-modifier.log`) e para o modificador (`modification.log`)
+  - Estratégias de limpeza implementadas:
+    - 🧹 **Rotação automática por tamanho** (evita que os arquivos ultrapassem um limite máximo)
+    - 🛑 **Limpeza ao encerrar o simulador** (remove logs temporários de sessão finalizada)
 
 - 📦 **Instalador com Inno Setup**
   - Detecta automaticamente o diretório `PanelState`
@@ -55,22 +57,17 @@ O **MSFSStateModifier** é um sistema desenvolvido em **Python** para o **Micros
 
 ### 🟡 Prioridade Média
 
-1. **Limpeza automática dos logs**
-   - Estratégia pendente:  
-     - Ao desligar o Windows  
-     - Ou a cada X horas
-
-2. **Tratar botões com valores do tipo float**
+1. **Tratar botões com valores do tipo float**
    - Exemplo: valores como `3.2`, `6.34`
    - Requer definição de `min`, `max` e precisão no JSON
 
-3. **Probabilidades encadeadas para decidir quantidade de alterações**
+2. **Probabilidades encadeadas para decidir quantidade de alterações**
    - Exemplo:
      - 50% de chance para aplicar 1 alteração
      - Se for bem-sucedido, tenta aplicar 2 com 40% de chance, e assim por diante.
    - Aborta o processo quando uma chance falha, e usa o último número bem-sucedido.
 
-4. **Checklist integrado**
+3. **Checklist integrado**
    - Um checklist de cold and dark opcional incluído no sistema
    - Pode ser aberto via ícone da bandeja ou interface
    - Útil para usuários que não possuem checklist externo
@@ -79,7 +76,7 @@ O **MSFSStateModifier** é um sistema desenvolvido em **Python** para o **Micros
 
 ## 🔵 Futuro
 
-5. **Interface Gráfica Bonita e Funcional**
+4. **Interface Gráfica Bonita e Funcional**
    - Com opções como:
      - Botão "Randomizar agora"
      - Histórico de modificações
@@ -87,24 +84,21 @@ O **MSFSStateModifier** é um sistema desenvolvido em **Python** para o **Micros
      - Visualização de logs e botão para limpá-los
      - Ícone de marca e estética clean
 
-6. **Perfis de randomização**
+5. **Perfis de randomização**
    - Exemplo:
      - Casual
      - Realista
      - Emergência
    - Selecionáveis via JSON e futuramente via UI
 
-7. **Perfis personalizados**
+6. **Perfis personalizados**
    - Carregamento de configurações específicas do usuário via arquivos `.json`
 
-8. **Randomização automática e não-repetitiva**
+7. **Randomização automática e não-repetitiva**
    - Garantir variação e evitar repetir o mesmo state duas vezes seguidas
 
-9. **Integração com clima ou aeroporto de origem**
+8. **Integração com clima ou aeroporto de origem**
    - Randomizar com base em METAR ou ICAO
-
-10. **Rotação automática dos logs**
-    - Deletar logs antigos e manter apenas os mais recentes
 
 ---
 
@@ -119,6 +113,6 @@ O **MSFSStateModifier** é um sistema desenvolvido em **Python** para o **Micros
 - Interface em bandeja do sistema
 - Estrutura de configuração modular via JSON
 - Suporte a diferentes tipos de botão: `binary`, `enum`, `int`
-- Planejamento para logs limpos e interface rica
 - Lógica realista de randomização com base em probabilidade
 - Planejamento de checklist integrado ao sistema
+- Estratégia robusta para rotação e limpeza de logs
