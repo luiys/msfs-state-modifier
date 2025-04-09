@@ -16,12 +16,20 @@ O objetivo do MSFS State Modifier é manter o estado geral Cold & Dark, mas com 
 
 - ✅ Suporte ao PMDG 737-800 (e futuramente outros modelos)
 - 🎲 Randomização automática dos estados da aeronave
-- 📁 Perfis personalizáveis via arquivos `.json`
+- 🧠 Lógica baseada em **probabilidades encadeadas** para decidir quantos botões serão alterados
+- 🧾 Níveis de realismo configuráveis via JSON:
+  - *Casual* – leve, ideal para iniciantes
+  - *Natural* – simula esquecimentos plausíveis da tripulação
+  - *Avançado* – exige atenção redobrada
+  - *Caótico* – variação intensa, como se tudo tivesse sido deixado errado
+- 📁 Arquivo único de configuração (`config.json`)
 - 🛫 Ativação automática ao iniciar o MSFS
-- 🧠 Lógica para detectar quando o simulador está no menu, carregando ou em voo
-- 🗂️ Instalação automatizada via Inno Setup
-- 🔧 Compatível com execução automática junto ao Windows
-- 🧾 Geração de logs e histórico de randomizações
+- 🔄 Aplicação automática de modificações ao retornar ao menu principal
+- 🚪 Encerramento automático junto com o simulador
+- 🧼 Limpeza de logs ao final de cada voo
+- 📦 Instalação automatizada com configuração de diretórios
+- 👻 Execução em segundo plano, sem janelas ou interferência visual
+- 🖼️ Interface em bandeja com botão de "Randomizar Agora" (versão mínima)
 
 ---
 
@@ -31,39 +39,40 @@ O instalador `Setup_MSFS_State_Modifier.exe` configura automaticamente:
 
 1. O caminho da pasta de estados do PMDG 737-800
 2. A pasta onde os arquivos modificados serão salvos
-3. Um atalho para iniciar junto com o MSFS2020 (opcional)
-4. Um serviço para manter o estado atualizado após cada voo
+3. Um atalho para iniciar junto com o MSFS2020
+4. Um serviço oculto que monitora o simulador e aplica os estados automaticamente
 
 ---
 
 ## 🧪 Como usar
 
-1. Instale o programa.
-2. Inicie o MSFS2020 normalmente.
-3. O programa irá detectar o momento certo e aplicar o estado desejado automaticamente.
-4. Você pode alterar os arquivos dentro da pasta `assets/` para definir seus próprios perfis.
+1. Instale o programa normalmente.
+2. Inicie o Microsoft Flight Simulator.
+3. O sistema detectará automaticamente o momento ideal para aplicar as alterações.
+4. O estado Cold & Dark será carregado com variações aleatórias realistas.
 
 ---
 
-## 🧼 Limpeza de logs (em breve)
+## ⚙️ Personalização
 
-Será implementada uma rotina automática para limpar arquivos de log antigos periodicamente, evitando acúmulo desnecessário no disco.
+Se quiser ajustar os **níveis de realismo**, abra o arquivo `config.json` (localizado em `%LOCALAPPDATA%\MSFSStateModifier`) e altere o valor da chave `"selected_profile"` para um dos seguintes:
+
+- `"casual"`
+- `"natural"`
+- `"avancado"`
+- `"caotico"`
+
+Cada perfil contém um conjunto de probabilidades que determinam a quantidade de alterações realizadas em cada voo.
 
 ---
 
 ## 🚧 Em desenvolvimento
 
-- Interface gráfica em bandeja do sistema
-- Suporte a múltiplos modelos PMDG (737-900, 737-700 etc.)
+- Suporte a outros modelos da família PMDG 737
+- Interface gráfica completa com histórico e controles
 - Integração com clima real ou aeroporto de origem
-- Randomização com base em eventos (por exemplo: hora do dia, falhas simuladas)
-- Detecção e tratamento de botões com múltiplos valores (não binários)
-
----
-
-## 🤝 Contribuições
-
-Atualmente, este projeto é mantido de forma pessoal. Sugestões, feedbacks e testes são bem-vindos!
+- Randomização com base em condições externas
+- Checklists integrados para Cold & Dark
 
 ---
 
@@ -80,7 +89,3 @@ A todos os desenvolvedores de conteúdo para MSFS, especialmente os criadores da
 ---
 
 > “Tudo o que fizerdes, fazei-o de todo o coração, como para o Senhor e não para os homens.” (Colossenses 3,23)
-
----
-
-
