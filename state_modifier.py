@@ -4,6 +4,7 @@ import json
 import shutil
 import sys
 import logging
+from utils.modifier_probability import get_number_of_modifications
 
 # Caminho base fora do Program Files
 BASE_DIR = os.path.join(os.environ["LOCALAPPDATA"], "MSFSStateModifier")
@@ -14,7 +15,6 @@ log_file = os.path.join(BASE_DIR, "modification.log")
 modifier_logger = logging.getLogger("state_modifier_logger")
 modifier_logger.setLevel(logging.INFO)
 
-# Evita múltiplos handlers se já estiver definido
 if not modifier_logger.handlers:
     handler = logging.FileHandler(log_file, encoding="utf-8")
     formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s", "%Y-%m-%d %H:%M:%S")
@@ -30,9 +30,10 @@ ORIGINAL_STATE_PATH = os.path.join(BASE_DIR, config["original_state_path"])
 MODIFIED_STATE_PATH = os.path.join(BASE_DIR, config["modified_state_path"])
 FINAL_STATE_PATH = config["final_state_path"]
 
-MODIFICATION_PROBABILITY = config.get("modification_probability", 0.2)
+# Novas configs de modificação
 BUTTONS = config.get("recommended_buttons", [])
-MAX_BUTTONS_TO_MODIFY = config.get("max_buttons_to_modify", 3)
+PROBABILITY_CHAIN = config.get("modification_probability_chain", {})
+MAX_BUTTONS_TO_MODIFY = config.get("max_buttons_to_modify", 8)
 
 def read_state_file(file_path):
     with open(file_path, "r") as file:
@@ -79,7 +80,15 @@ def modify_state(lines):
     modified_count = 0
     changes_log = []
 
-    buttons_to_modify = random.sample(BUTTONS, min(MAX_BUTTONS_TO_MODIFY, len(BUTTONS)))
+    # Aplica a lógica encadeada
+    num_modifications = get_number_of_modifications(PROBABILITY_CHAIN)
+    num_modifications = min(num_modifications, MAX_BUTTONS_TO_MODIFY, len(BUTTONS))
+
+    if num_modifications == 0:
+        modifier_logger.info("🎲 Sorteio não selecionou nenhuma modificação.")
+        return lines
+
+    buttons_to_modify = random.sample(BUTTONS, num_modifications)
 
     for button in buttons_to_modify:
         button_name = button["name"]
@@ -103,15 +112,15 @@ def modify_state(lines):
 
 def main():
     original_lines = read_state_file(ORIGINAL_STATE_PATH)
+    modified_lines = modify_state(original_lines)
 
-    if random.random() < MODIFICATION_PROBABILITY:
-        modified_lines = modify_state(original_lines)
+    if modified_lines != original_lines:
         write_state_file(MODIFIED_STATE_PATH, modified_lines)
         shutil.copy(MODIFIED_STATE_PATH, FINAL_STATE_PATH)
         modifier_logger.info(f"Modificações aplicadas e copiadas para: {FINAL_STATE_PATH}")
     else:
         shutil.copy(ORIGINAL_STATE_PATH, FINAL_STATE_PATH)
-        modifier_logger.info("Nenhuma modificação feita (sorteio falhou). Estado original mantido.")
+        modifier_logger.info("Estado original mantido (nenhuma alteração feita).")
 
 if __name__ == "__main__":
     main()

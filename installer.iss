@@ -17,6 +17,7 @@ Source: "empty_log.txt"; DestDir: "{app}"; DestName: "msfs-state-modifier.log"; 
 Source: "watch-msfs.ps1"; DestDir: "{app}"; Flags: ignoreversion
 Source: "empty_log.txt"; DestDir: "{localappdata}\MSFSStateModifier"; DestName: "modification.log"; Flags: onlyifdoesntexist
 
+
 [Icons]
 Name: "{group}\MSFS State Modifier"; Filename: "{app}\msfs-state-modifier.exe"
 Name: "{commonstartup}\MSFS State Modifier - Hidden Launcher"; Filename: "{app}\launch-hidden.vbs"

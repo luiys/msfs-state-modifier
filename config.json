@@ -3,7 +3,17 @@
     "modified_state_path": "assets/COLDDARK-copia.sav",
     "final_state_path": "TO_BE_DEFINED",
     "modification_probability": 1,
-    "max_buttons_to_modify": 3,
+    "max_buttons_to_modify": 8,
+    "modification_probability_chain": {
+        "1": 0.5,
+        "2": 0.4,
+        "3": 0.3,
+        "4": 0.2,
+        "5": 0.1,
+        "6": 0.05,
+        "7": 0.02,
+        "8": 0.01
+    },
     "recommended_buttons": [
       { "name": "Passenger Oxygen Switch", "type": "binary" },
       { "name": "Wing AntiIce Switch", "type": "binary" },
