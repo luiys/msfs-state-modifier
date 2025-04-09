@@ -56,6 +56,14 @@ while ($true) {
             }
 
             Write-Log "MSFS2020 foi encerrado."
+
+            # Encerra o modificador se estiver rodando
+            $modifierProc = Get-Process -Name "msfs-state-modifier" -ErrorAction SilentlyContinue
+            if ($modifierProc) {
+                Write-Log "Encerrando o modificador de state..."
+                Stop-Process -Id $modifierProc.Id -Force
+                Write-Log "Modificador encerrado com sucesso."
+            }
         } else {
             Write-Log "MSFS2020 não está em execução."
         }
