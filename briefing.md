@@ -9,7 +9,9 @@ O **MSFSStateModifier** é um sistema desenvolvido em **Python** para o **Micros
 ## Funcionalidades
 
 - 🎛️ **Randomização de botões no perfil Cold and Dark**
-  - Altera até *N* botões aleatórios com base em configuração JSON.
+  - Altera botões aleatórios com base em configuração JSON.
+  - Quantidade de alterações decidida por **probabilidades encadeadas**, simulando comportamento realista:
+    - Exemplo: 50% de chance de aplicar 1 alteração, 40% para aplicar 2, e assim por diante.
   - Suporte a diferentes tipos de botões:
     - `binary`: alternância simples (ex: 0 ou 1)
     - `enum`: múltiplos valores fixos (ex: `Off`, `Auto`, `On`)
@@ -60,13 +62,7 @@ O **MSFSStateModifier** é um sistema desenvolvido em **Python** para o **Micros
    - Exemplo: valores como `3.2`, `6.34`
    - Requer definição de `min`, `max` e precisão no JSON
 
-2. **Probabilidades encadeadas para decidir quantidade de alterações**
-   - Exemplo:
-     - 50% de chance para aplicar 1 alteração
-     - Se for bem-sucedido, tenta aplicar 2 com 40% de chance, e assim por diante.
-   - Aborta o processo quando uma chance falha, e usa o último número bem-sucedido.
-
-3. **Checklist integrado**
+2. **Checklist integrado**
    - Um checklist de cold and dark opcional incluído no sistema
    - Pode ser aberto via ícone da bandeja ou interface
    - Útil para usuários que não possuem checklist externo
@@ -75,7 +71,7 @@ O **MSFSStateModifier** é um sistema desenvolvido em **Python** para o **Micros
 
 ## 🔵 Futuro
 
-4. **Interface Gráfica Bonita e Funcional**
+3. **Interface Gráfica Bonita e Funcional**
    - Com opções como:
      - Botão "Randomizar agora"
      - Histórico de modificações
@@ -83,20 +79,20 @@ O **MSFSStateModifier** é um sistema desenvolvido em **Python** para o **Micros
      - Visualização de logs e botão para limpá-los
      - Ícone de marca e estética clean
 
-5. **Perfis de randomização**
+4. **Perfis de randomização**
    - Exemplo:
      - Casual
      - Realista
      - Emergência
    - Selecionáveis via JSON e futuramente via UI
 
-6. **Perfis personalizados**
+5. **Perfis personalizados**
    - Carregamento de configurações específicas do usuário via arquivos `.json`
 
-7. **Randomização automática e não-repetitiva**
+6. **Randomização automática e não-repetitiva**
    - Garantir variação e evitar repetir o mesmo state duas vezes seguidas
 
-8. **Integração com clima ou aeroporto de origem**
+7. **Integração com clima ou aeroporto de origem**
    - Randomizar com base em METAR ou ICAO
 
 ---
@@ -112,6 +108,6 @@ O **MSFSStateModifier** é um sistema desenvolvido em **Python** para o **Micros
 - Interface em bandeja do sistema
 - Estrutura de configuração modular via JSON
 - Suporte a diferentes tipos de botão: `binary`, `enum`, `int`
-- Lógica realista de randomização com base em probabilidade
+- Lógica realista de randomização com base em probabilidade encadeada
 - Planejamento de checklist integrado ao sistema
 - Estratégia de limpeza automática de logs ao encerrar o simulador
