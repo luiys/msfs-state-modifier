@@ -2,97 +2,98 @@
 
 ## Descrição Geral
 
-O **MSFSStateModifier** é um sistema desenvolvido em **Python** com o objetivo de monitorar o estado do simulador **Microsoft Flight Simulator 2020 (MSFS2020)** e aplicar automaticamente modificações no painel do **PMDG 737-800** com base em perfis aleatórios, simulando a possibilidade de que a tripulação anterior ou a equipe de manutenção tenha deixado algum botão fora da posição padrão do *Cold and Dark*.
+O **MSFSStateModifier** é um sistema desenvolvido em **Python** para o **Microsoft Flight Simulator 2020 (MSFS2020)** que modifica automaticamente o painel da aeronave **PMDG 737-800** ao carregamento do simulador. Ele simula situações em que a tripulação anterior ou equipe de manutenção pode ter deixado alguns botões fora das posições padrão do *Cold and Dark*, adicionando realismo e imprevisibilidade ao ambiente de voo.
 
 ---
 
 ## Funcionalidades
 
-- 🎛️ **Randomização de botões no state Cold and Dark**
-  - Seleciona até *N* botões aleatórios para alterar o valor.
-  - Tipos de botões suportados:
-    - `binary` (valores 0 ou 1)
-    - `enum` (lista de valores fixos como `"OFF"`, `"AUTO"`, `"ON"`)
-    - `int` (inteiros entre `min` e `max` definidos no JSON)
+- 🎛️ **Randomização de botões no perfil Cold and Dark**
+  - Altera até *N* botões aleatórios com base em configuração JSON.
+  - Suporte a diferentes tipos de botões:
+    - `binary`: alternância simples (ex: 0 ou 1)
+    - `enum`: múltiplos valores fixos (ex: `Off`, `Auto`, `On`)
+    - `int`: intervalo de inteiros definidos por `min` e `max`
 
-- 🛫 **Monitoramento do simulador com SimConnect**
-  - Detecta:
-    - Menu principal
-    - Carregamento de voo
-    - Voo iniciado
-  - Aplica alterações no momento certo, sem interferência do usuário.
+- 🛫 **Monitoramento de voo via SimConnect**
+  - Observa a variável `GROUND_ALTITUDE`:
+    - `0`: menu principal
+    - `None`: loading
+    - `> 0`: voo iniciado
+  - Aplica modificações nos momentos ideais:
+    - Ao iniciar o sistema
+    - Ao retornar ao menu após um voo
 
-- ⚙️ **Execução automática com o Windows**
-  - Script PowerShell inicia com o sistema e aguarda o MSFS2020.
+- 🔄 **Encerramento automático**
+  - O `.exe` principal é finalizado automaticamente quando o MSFS2020 é encerrado.
+
+- 🚀 **Início automático com o Windows**
+  - O script PowerShell (`watch-msfs.ps1`) inicia junto com o sistema via agendamento automático com um VBS oculto.
+
+- 👻 **Execução oculta**
+  - Tanto o PowerShell quanto o `.exe` principal executam de forma invisível ao usuário, sem ocupar a barra de tarefas.
+
+- 🖼️ **Interface gráfica mínima**
+  - Ícone na bandeja do sistema (system tray)
+  - Janela pode ser exibida ao clicar no ícone
 
 - 📁 **Arquivos e configuração fora do Program Files**
-  - Usa `%LOCALAPPDATA%\MSFSStateModifier` para evitar erros de permissão.
+  - Usa `%LOCALAPPDATA%\MSFSStateModifier` para evitar erros de permissão
 
 - 📝 **Sistema de logs**
-  - Logs separados para o monitorador e para o modificador.
-  - Planejamento para rotação automática futura.
+  - Logs separados para o monitorador e para o modificador
+  - Salvos em local seguro com permissão de escrita
 
 - 📦 **Instalador com Inno Setup**
-  - Detecta o diretório `PanelState` automaticamente.
-  - Permite personalização manual dos caminhos.
+  - Detecta automaticamente o diretório `PanelState`
+  - Permite alteração manual do destino
+  - Atualiza dinamicamente o `config.json` no pós-instalação
 
 ---
 
 ## Roadmap de Funcionalidades
 
-### 🟢 Prioridade Alta (estável/finalização)
-
-1. **Ocultar execução do PowerShell**
-   - Ao iniciar com o Windows, o PowerShell deve rodar completamente escondido (sem janela nem ícone visível na barra).
-
-2. **Minimizar o .exe para a bandeja do sistema**
-   - O programa deve aparecer apenas na bandeja (setinha da barra de tarefas) e não na barra principal.
-
-3. **Fechar automaticamente o .exe quando o simulador for encerrado**
-   - Detectar quando o MSFS2020 é finalizado e encerrar o modificador automaticamente.
-
----
-
 ### 🟡 Prioridade Média
 
-4. **Limpeza automática dos logs**
+1. **Limpeza automática dos logs**
    - Estratégia pendente:  
-     - Ao desligar o Windows,  
-     - Ou a cada X horas.
-5. **Tratar botões com valores do tipo float**
+     - Ao desligar o Windows  
+     - Ou a cada X horas
+
+2. **Tratar botões com valores do tipo float**
    - Exemplo: valores como `3.2`, `6.34`
-   - Requer definição de `min`, `max` e precisão
+   - Requer definição de `min`, `max` e precisão no JSON
 
 ---
 
-### 🔵 Futuro
+## 🔵 Futuro
 
-6. **Interface Gráfica Bonita e Funcional**
+3. **Interface Gráfica Bonita e Funcional**
    - Com opções como:
      - Botão "Randomizar agora"
      - Histórico de modificações
      - Status do simulador
      - Visualização de logs e botão para limpá-los
-     - Ícone de marca e estética clean.
+     - Ícone de marca e estética clean
 
-7. **Perfis de randomização**
+4. **Perfis de randomização**
    - Exemplo:
      - Casual
      - Realista
      - Emergência
-   - Selecionáveis via JSON e futuramente via UI.
+   - Selecionáveis via JSON e futuramente via UI
 
-8. **Perfis personalizados**
-   - Carregamento de configurações específicas do usuário via arquivos `.json`.
+5. **Perfis personalizados**
+   - Carregamento de configurações específicas do usuário via arquivos `.json`
 
-9. **Randomização automática e não-repetitiva**
-   - Garantir variação e evitar repetir o mesmo state duas vezes seguidas.
+6. **Randomização automática e não-repetitiva**
+   - Garantir variação e evitar repetir o mesmo state duas vezes seguidas
 
-10. **Integração com clima ou aeroporto de origem**
-    - Randomizar com base em METAR ou ICAO.
+7. **Integração com clima ou aeroporto de origem**
+   - Randomizar com base em METAR ou ICAO
 
-11. **Rotação automática dos logs**
-    - Deletar logs antigos e manter apenas os mais recentes.
+8. **Rotação automática dos logs**
+   - Deletar logs antigos e manter apenas os mais recentes
 
 ---
 
@@ -103,6 +104,8 @@ O **MSFSStateModifier** é um sistema desenvolvido em **Python** com o objetivo 
 - Randomização automática com base no carregamento do simulador
 - Integração nativa com SimConnect
 - Execução automática com o Windows
-- Identidade visual pensada para flightsim.to
+- Ocultação completa (PowerShell e EXE)
+- Interface em bandeja do sistema
 - Estrutura de configuração modular via JSON
 - Suporte a diferentes tipos de botão: `binary`, `enum`, `int`
+- Planejamento para logs limpos e interface rica
