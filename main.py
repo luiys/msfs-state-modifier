@@ -10,32 +10,35 @@ from state_modifier import main as state_modifier
 from pystray import Icon, MenuItem, Menu
 from PIL import Image
 
-# Configurar o sistema de logs
+# Diretório e arquivo de log para a main.py
 log_dir = os.path.join(os.environ.get("LOCALAPPDATA"), "MSFSStateModifier")
 os.makedirs(log_dir, exist_ok=True)
 log_file = os.path.join(log_dir, "msfs-state-modifier.log")
 
-logging.basicConfig(
-    filename=log_file,
-    level=logging.INFO,
-    format="%(asctime)s - %(levelname)s - %(message)s",
-    datefmt="%Y-%m-%d %H:%M:%S"
-)
+# Logger exclusivo da main
+main_logger = logging.getLogger("main_logger")
+main_logger.setLevel(logging.INFO)
+
+if not main_logger.handlers:
+    handler = logging.FileHandler(log_file, encoding="utf-8")
+    formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s", "%Y-%m-%d %H:%M:%S")
+    handler.setFormatter(formatter)
+    main_logger.addHandler(handler)
 
 # Variável de controle de parada
 stop_event = threading.Event()
 
 def connect_to_simulator():
     try:
-        logging.info("🌐 Tentando conectar ao simulador...")
+        main_logger.info("🌐 Tentando conectar ao simulador...")
         sm = SimConnect()
         aq = AircraftRequests(sm, _time=2000)
-        logging.info("✅ Conexão estabelecida com sucesso!")
+        main_logger.info("✅ Conexão estabelecida com sucesso!")
         print("✅ Conexão estabelecida com sucesso!")
         state_modifier()
         return sm, aq
     except Exception as e:
-        logging.error(f"❌ Falha ao conectar ao simulador: {e}")
+        main_logger.error(f"❌ Falha ao conectar ao simulador: {e}")
         print(f"❌ Falha ao conectar ao simulador: {e}")
         return None, None
 
@@ -43,15 +46,16 @@ def monitor_ground_altitude():
     sm = None
     aq = None
     state = "menu"
+    last_logged_state = None
 
-    logging.info("🔍 Monitorando estado do simulador...")
+    main_logger.info("🔍 Monitorando estado do simulador...")
     print("🔍 Monitorando estado do simulador...")
 
     while not stop_event.is_set():
         if sm is None or aq is None:
             sm, aq = connect_to_simulator()
             if sm is None or aq is None:
-                logging.warning("🔄 Tentando reconectar em 5 segundos...")
+                main_logger.warning("🔄 Tentando reconectar em 5 segundos...")
                 print("🔄 Tentando reconectar em 5 segundos...")
                 time.sleep(5)
                 continue
@@ -65,12 +69,9 @@ def monitor_ground_altitude():
             if isinstance(title, bytes):
                 title = title.decode('utf-8')
 
-            logging.info(f"[GROUND_ALTITUDE] {ground_altitude} | [TITLE] {title}")
-            print(f"[GROUND_ALTITUDE] {ground_altitude} | [TITLE] {title}")
-
             if ground_altitude is None:
                 if state != "loading":
-                    logging.info("⏳ Loading detectado...")
+                    main_logger.info("⏳ Loading detectado...")
                     print("⏳ Loading detectado...")
                     if state == "em voo":
                         state_modifier()
@@ -78,26 +79,29 @@ def monitor_ground_altitude():
 
             elif ground_altitude == 0:
                 if state != "menu":
-                    logging.info("🏠 Retornou ao menu principal.")
+                    main_logger.info("🏠 Retornou ao menu principal.")
                     print("🏠 Retornou ao menu principal.")
                     state = "menu"
 
             elif ground_altitude > 0:
                 if state != "em voo":
-                    logging.info("🛫 Simulador ativo com cenário carregado.")
+                    main_logger.info("🛫 Simulador ativo com cenário carregado.")
                     if title and "PMDG 737-800" in title:
-                        logging.info("🚀 Voo com 737-800 iniciado!")
+                        main_logger.info("🚀 Voo com 737-800 iniciado!")
                         print("🚀 Voo com 737-800 iniciado!")
                     state = "em voo"
 
-            time.sleep(2)
-            logging.info(f"[STATE]: {state}")
+            if state != last_logged_state:
+                main_logger.info(f"[STATE]: {state}")
+                last_logged_state = state
+
             print(f"[STATE]: {state}")
+            time.sleep(2)
 
         except Exception as e:
-            logging.error(f"⚠️ Erro durante a comunicação com o simulador: {e}")
+            main_logger.error(f"⚠️ Erro durante a comunicação com o simulador: {e}")
             print(f"⚠️ Erro durante a comunicação com o simulador: {e}")
-            logging.warning("🔄 Reconectando ao simulador...")
+            main_logger.warning("🔄 Reconectando ao simulador...")
             print("🔄 Reconectando ao simulador...")
             sm = None
             aq = None
@@ -109,7 +113,6 @@ def open_interface():
     window.geometry("300x150")
     window.resizable(False, False)
 
-    # Define o caminho do ícone
     icon_path = os.path.join(os.path.dirname(sys.executable), "icon.ico") if getattr(sys, 'frozen', False) else "icon.ico"
     if os.path.exists(icon_path):
         window.iconbitmap(icon_path)

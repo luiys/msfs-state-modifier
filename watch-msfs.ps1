@@ -5,6 +5,8 @@ param (
 # Caminho do diretório de log seguro
 $LogDir = "$env:LOCALAPPDATA\MSFSStateModifier"
 $LogFile = Join-Path -Path $LogDir -ChildPath "msfs-state-monitor.log"
+$MainLogFile = Join-Path -Path $LogDir -ChildPath "msfs-state-modifier.log"
+$ModifierLogFile = Join-Path -Path $LogDir -ChildPath "modification.log"
 
 # Cria a pasta de log, se necessário
 if (-not (Test-Path -Path $LogDir)) {
@@ -27,6 +29,25 @@ function Is-FlightSimulatorRunning {
 function Is-StateModifierRunning {
     $process = Get-Process -Name "msfs-state-modifier" -ErrorAction SilentlyContinue
     return $process -ne $null
+}
+
+function Clear-Logs {
+    try {
+        if (Test-Path $LogFile) {
+            Clear-Content $LogFile
+            Write-Log "🧹 Log do monitor limpo com sucesso."
+        }
+        if (Test-Path $MainLogFile) {
+            Clear-Content $MainLogFile
+            Write-Log "🧹 Log da main limpo com sucesso."
+        }
+        if (Test-Path $ModifierLogFile) {
+            Clear-Content $ModifierLogFile
+            Write-Log "🧹 Log do modificador limpo com sucesso."
+        }
+    } catch {
+        Write-Log "⚠️ Erro ao tentar limpar os logs: $_"
+    }
 }
 
 Write-Log "Monitor de MSFS iniciado."
@@ -64,6 +85,9 @@ while ($true) {
                 Stop-Process -Id $modifierProc.Id -Force
                 Write-Log "Modificador encerrado com sucesso."
             }
+
+            # Limpa os logs
+            Clear-Logs
         } else {
             Write-Log "MSFS2020 não está em execução."
         }

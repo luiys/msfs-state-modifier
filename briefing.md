@@ -43,8 +43,7 @@ O **MSFSStateModifier** é um sistema desenvolvido em **Python** para o **Micros
 - 📝 **Sistema de logs**
   - Logs separados para o monitorador (`msfs-state-modifier.log`) e para o modificador (`modification.log`)
   - Estratégias de limpeza implementadas:
-    - 🧹 **Rotação automática por tamanho** (evita que os arquivos ultrapassem um limite máximo)
-    - 🛑 **Limpeza ao encerrar o simulador** (remove logs temporários de sessão finalizada)
+    - 🧹 **Limpeza ao encerrar o simulador** (remove logs de sessões anteriores)
 
 - 📦 **Instalador com Inno Setup**
   - Detecta automaticamente o diretório `PanelState`
@@ -115,4 +114,4 @@ O **MSFSStateModifier** é um sistema desenvolvido em **Python** para o **Micros
 - Suporte a diferentes tipos de botão: `binary`, `enum`, `int`
 - Lógica realista de randomização com base em probabilidade
 - Planejamento de checklist integrado ao sistema
-- Estratégia robusta para rotação e limpeza de logs
+- Estratégia de limpeza automática de logs ao encerrar o simulador
