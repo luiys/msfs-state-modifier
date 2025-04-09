@@ -15,6 +15,7 @@ Source: "dist\assets\*"; DestDir: "{localappdata}\MSFSStateModifier\assets"; Fla
 Source: "icon.ico"; DestDir: "{app}"; Flags: ignoreversion
 Source: "empty_log.txt"; DestDir: "{app}"; DestName: "msfs-state-modifier.log"; Flags: onlyifdoesntexist
 Source: "watch-msfs.ps1"; DestDir: "{app}"; Flags: ignoreversion
+Source: "empty_log.txt"; DestDir: "{localappdata}\MSFSStateModifier"; DestName: "modification.log"; Flags: onlyifdoesntexist
 
 [Icons]
 Name: "{group}\MSFS State Modifier"; Filename: "{app}\msfs-state-modifier.exe"
@@ -101,6 +102,7 @@ Type: files; Name: "{app}\launch-hidden.vbs"
 Type: files; Name: "{app}\msfs-state-modifier.exe"
 Type: filesandordirs; Name: "{localappdata}\MSFSStateModifier"
 Type: dirifempty; Name: "{app}"
+Type: files; Name: "{localappdata}\MSFSStateModifier\modification.log"
 
 [Run]
 Filename: "powershell.exe"; Parameters: "-Command New-Item -ItemType Directory -Path '$env:LOCALAPPDATA\MSFSStateModifier' -Force"; Flags: runhidden

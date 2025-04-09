@@ -64,11 +64,22 @@ O **MSFSStateModifier** é um sistema desenvolvido em **Python** para o **Micros
    - Exemplo: valores como `3.2`, `6.34`
    - Requer definição de `min`, `max` e precisão no JSON
 
+3. **Probabilidades encadeadas para decidir quantidade de alterações**
+   - Exemplo:
+     - 50% de chance para aplicar 1 alteração
+     - Se for bem-sucedido, tenta aplicar 2 com 40% de chance, e assim por diante.
+   - Aborta o processo quando uma chance falha, e usa o último número bem-sucedido.
+
+4. **Checklist integrado**
+   - Um checklist de cold and dark opcional incluído no sistema
+   - Pode ser aberto via ícone da bandeja ou interface
+   - Útil para usuários que não possuem checklist externo
+
 ---
 
 ## 🔵 Futuro
 
-3. **Interface Gráfica Bonita e Funcional**
+5. **Interface Gráfica Bonita e Funcional**
    - Com opções como:
      - Botão "Randomizar agora"
      - Histórico de modificações
@@ -76,24 +87,24 @@ O **MSFSStateModifier** é um sistema desenvolvido em **Python** para o **Micros
      - Visualização de logs e botão para limpá-los
      - Ícone de marca e estética clean
 
-4. **Perfis de randomização**
+6. **Perfis de randomização**
    - Exemplo:
      - Casual
      - Realista
      - Emergência
    - Selecionáveis via JSON e futuramente via UI
 
-5. **Perfis personalizados**
+7. **Perfis personalizados**
    - Carregamento de configurações específicas do usuário via arquivos `.json`
 
-6. **Randomização automática e não-repetitiva**
+8. **Randomização automática e não-repetitiva**
    - Garantir variação e evitar repetir o mesmo state duas vezes seguidas
 
-7. **Integração com clima ou aeroporto de origem**
+9. **Integração com clima ou aeroporto de origem**
    - Randomizar com base em METAR ou ICAO
 
-8. **Rotação automática dos logs**
-   - Deletar logs antigos e manter apenas os mais recentes
+10. **Rotação automática dos logs**
+    - Deletar logs antigos e manter apenas os mais recentes
 
 ---
 
@@ -109,3 +120,5 @@ O **MSFSStateModifier** é um sistema desenvolvido em **Python** para o **Micros
 - Estrutura de configuração modular via JSON
 - Suporte a diferentes tipos de botão: `binary`, `enum`, `int`
 - Planejamento para logs limpos e interface rica
+- Lógica realista de randomização com base em probabilidade
+- Planejamento de checklist integrado ao sistema
