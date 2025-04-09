@@ -1,0 +1,39 @@
+# Diretórios gerados por PyInstaller
+build/
+dist/
+
+# Cache do Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Arquivos de log
+*.log
+
+# Arquivos de build
+*.spec
+*.toc
+*.pkg
+*.pyz
+*.html
+*.zip
+*.exe
+
+# Arquivos temporários ou em rascunho
+main_old*.py
+state_modifier_old*.py
+installer_old.iss
+TO_BE_DEFINED
+
+# Arquivos do PowerShell (se não forem parte essencial do repositório)
+# watch-msfs.ps1
+
+# Evitar versionar DLLs se forem geradas ou redistribuídas
+SimConnect.dll
+
+# PyInstaller localpycs
+**/localpycs/
+
+# Editor / Sistema
+.DS_Store
+Thumbs.db
