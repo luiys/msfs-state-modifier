@@ -1,11 +1,16 @@
 import os
 import sys
 import time
+import threading
 import logging
+import tkinter as tk
+from tkinter import messagebox
 from SimConnect import SimConnect, AircraftRequests
 from state_modifier import main as state_modifier
+from pystray import Icon, MenuItem, Menu
+from PIL import Image
 
-# Configurar o sistema de logs em pasta com permissão de escrita
+# Configurar o sistema de logs
 log_dir = os.path.join(os.environ.get("LOCALAPPDATA"), "MSFSStateModifier")
 os.makedirs(log_dir, exist_ok=True)
 log_file = os.path.join(log_dir, "msfs-state-modifier.log")
@@ -17,11 +22,8 @@ logging.basicConfig(
     datefmt="%Y-%m-%d %H:%M:%S"
 )
 
-def get_simconnect_dll_path():
-    if getattr(sys, 'frozen', False):
-        return os.path.join(sys._MEIPASS, "SimConnect", "SimConnect.dll")
-    else:
-        return "SimConnect.dll"
+# Variável de controle de parada
+stop_event = threading.Event()
 
 def connect_to_simulator():
     try:
@@ -45,7 +47,7 @@ def monitor_ground_altitude():
     logging.info("🔍 Monitorando estado do simulador...")
     print("🔍 Monitorando estado do simulador...")
 
-    while True:
+    while not stop_event.is_set():
         if sm is None or aq is None:
             sm, aq = connect_to_simulator()
             if sm is None or aq is None:
@@ -101,5 +103,46 @@ def monitor_ground_altitude():
             aq = None
             time.sleep(5)
 
+def open_interface():
+    window = tk.Tk()
+    window.title("MSFS State Modifier")
+    window.geometry("300x150")
+    window.resizable(False, False)
+
+    # Define o caminho do ícone
+    icon_path = os.path.join(os.path.dirname(sys.executable), "icon.ico") if getattr(sys, 'frozen', False) else "icon.ico"
+    if os.path.exists(icon_path):
+        window.iconbitmap(icon_path)
+
+    tk.Label(window, text="Simulador monitorado!", font=("Arial", 12)).pack(pady=20)
+
+    def randomize_now():
+        state_modifier()
+        messagebox.showinfo("State", "Modificação aleatória aplicada!")
+
+    tk.Button(window, text="Randomizar agora", command=randomize_now).pack(pady=5)
+    tk.Button(window, text="Sair", command=lambda: (stop_event.set(), icon.stop(), window.destroy())).pack(pady=5)
+
+    window.mainloop()
+
+def create_tray_icon():
+    try:
+        icon_path = os.path.join(os.path.dirname(sys.executable), "icon.ico") if getattr(sys, 'frozen', False) else "icon.ico"
+        image = Image.open(icon_path)
+    except:
+        image = Image.new("RGB", (64, 64), color="black")
+
+    return Icon(
+        "MSFS Modifier",
+        image,
+        "MSFS State Modifier",
+        menu=Menu(
+            MenuItem("Abrir", lambda _: threading.Thread(target=open_interface).start()),
+            MenuItem("Sair", lambda _: (stop_event.set(), icon.stop()))
+        )
+    )
+
 if __name__ == "__main__":
-    monitor_ground_altitude()
+    threading.Thread(target=monitor_ground_altitude, daemon=True).start()
+    icon = create_tray_icon()
+    icon.run()
