@@ -18,7 +18,7 @@ Source: "watch-msfs.ps1"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]
 Name: "{group}\MSFS State Modifier"; Filename: "{app}\msfs-state-modifier.exe"
-Name: "{commonstartup}\MSFS State Modifier - Monitor"; Filename: "powershell.exe"; Parameters: "-ExecutionPolicy Bypass -File ""{app}\watch-msfs.ps1"" -ExecutablePath ""{app}\msfs-state-modifier.exe"""; WorkingDir: "{app}"
+Name: "{commonstartup}\MSFS State Modifier - Hidden Launcher"; Filename: "{app}\launch-hidden.vbs"
 
 [Code]
 var
@@ -57,15 +57,14 @@ end;
 
 procedure CurStepChanged(CurStep: TSetupStep);
 var
-  ConfigFile: string;
+  ConfigFile, FinalPath, NewLine, VBScriptFile: string;
   ConfigContentAnsi: AnsiString;
   ConfigContent: string;
-  FinalPath: string;
-  NewLine: string;
   ResultCode: Integer;
 begin
   if CurStep = ssPostInstall then
   begin
+    // Atualizar o config.json com o caminho final
     ConfigFile := ExpandConstant('{localappdata}\MSFSStateModifier\config.json');
     FinalPath := FinalStatePage.Values[0] + '/random_cold_and_dark_state.sav';
     FinalPath := ReplaceStr(FinalPath, '\', '/');
@@ -78,8 +77,17 @@ begin
       SaveStringToFile(ConfigFile, ConfigContent, False);
     end;
 
+    // Criar dinamicamente o launch-hidden.vbs
+    VBScriptFile := ExpandConstant('{app}\launch-hidden.vbs');
+    SaveStringToFile(VBScriptFile,
+      'Set WshShell = CreateObject("WScript.Shell")' + #13#10 +
+      'WshShell.Run "powershell.exe -ExecutionPolicy Bypass -WindowStyle Hidden -File ""' +
+      ExpandConstant('{app}\watch-msfs.ps1') + '"" -ExecutablePath ""' +
+      ExpandConstant('{app}\msfs-state-modifier.exe') + '""", 0', False);
+
+    // Executar PowerShell ocultamente já durante a instalação
     Exec('powershell.exe',
-      '-ExecutionPolicy Bypass -File "' + ExpandConstant('{app}\watch-msfs.ps1') +
+      '-ExecutionPolicy Bypass -WindowStyle Hidden -File "' + ExpandConstant('{app}\watch-msfs.ps1') +
       '" -ExecutablePath "' + ExpandConstant('{app}\msfs-state-modifier.exe') + '"',
       '', SW_HIDE, ewNoWait, ResultCode);
   end;
@@ -89,6 +97,7 @@ end;
 Type: files; Name: "{app}\msfs-state-modifier.log"
 Type: files; Name: "{app}\watch-msfs.ps1"
 Type: files; Name: "{app}\icon.ico"
+Type: files; Name: "{app}\launch-hidden.vbs"
 Type: files; Name: "{app}\msfs-state-modifier.exe"
 Type: filesandordirs; Name: "{localappdata}\MSFSStateModifier"
 Type: dirifempty; Name: "{app}"
