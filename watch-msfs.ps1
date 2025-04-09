@@ -58,11 +58,18 @@ if (-not (Test-Path $ExecutablePath)) {
     exit 1
 }
 
+# Estado anterior do simulador
+$previousState = $false
+
 # Loop contínuo para monitorar o MSFS
 while ($true) {
     try {
-        if (Is-FlightSimulatorRunning) {
-            Write-Log "MSFS2020 detectado."
+        $isRunning = Is-FlightSimulatorRunning
+
+        if ($isRunning) {
+            if (-not $previousState) {
+                Write-Log "MSFS2020 detectado."
+            }
 
             if (-not (Is-StateModifierRunning)) {
                 Write-Log "Iniciando o modificador de state..."
@@ -71,14 +78,12 @@ while ($true) {
                 Write-Log "Modificador já está em execução."
             }
 
-            # Espera até o MSFS ser fechado
             while (Is-FlightSimulatorRunning) {
                 Start-Sleep -Seconds 5
             }
 
             Write-Log "MSFS2020 foi encerrado."
 
-            # Encerra o modificador se estiver rodando
             $modifierProc = Get-Process -Name "msfs-state-modifier" -ErrorAction SilentlyContinue
             if ($modifierProc) {
                 Write-Log "Encerrando o modificador de state..."
@@ -86,11 +91,15 @@ while ($true) {
                 Write-Log "Modificador encerrado com sucesso."
             }
 
-            # Limpa os logs
             Clear-Logs
-        } else {
-            Write-Log "MSFS2020 não está em execução."
         }
+        else {
+            if ($previousState) {
+                Write-Log "MSFS2020 não está em execução."
+            }
+        }
+
+        $previousState = $isRunning
     } catch {
         Write-Log "Erro durante monitoramento: $_"
     }
