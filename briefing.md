@@ -17,6 +17,14 @@ O **MSFSStateModifier** é um sistema desenvolvido em **Python** para o **Micros
     - `enum`: múltiplos valores fixos (ex: `Off`, `Auto`, `On`)
     - `int`: intervalo de inteiros definidos por `min` e `max`
 
+- 🧩 **Perfis de randomização prontos**
+  - Perfis ajustáveis no `config.json` com níveis de complexidade distintos:
+    - `casual`: alterações leves e esporádicas
+    - `natural`: comportamento realista de descuidos da tripulação
+    - `avancado`: situações mais exigentes e frequentes
+    - `caotico`: ambiente altamente imprevisível e desafiador
+  - O perfil ativo é definido pela chave `selected_profile`.
+
 - 🛫 **Monitoramento de voo via SimConnect**
   - Observa a variável `GROUND_ALTITUDE`:
     - `0`: menu principal
@@ -79,20 +87,10 @@ O **MSFSStateModifier** é um sistema desenvolvido em **Python** para o **Micros
      - Visualização de logs e botão para limpá-los
      - Ícone de marca e estética clean
 
-4. **Perfis de randomização**
-   - Exemplo:
-     - Casual
-     - Realista
-     - Emergência
-   - Selecionáveis via JSON e futuramente via UI
-
-5. **Perfis personalizados**
-   - Carregamento de configurações específicas do usuário via arquivos `.json`
-
-6. **Randomização automática e não-repetitiva**
+4. **Randomização automática e não-repetitiva**
    - Garantir variação e evitar repetir o mesmo state duas vezes seguidas
 
-7. **Integração com clima ou aeroporto de origem**
+5. **Integração com clima ou aeroporto de origem**
    - Randomizar com base em METAR ou ICAO
 
 ---
@@ -109,5 +107,6 @@ O **MSFSStateModifier** é um sistema desenvolvido em **Python** para o **Micros
 - Estrutura de configuração modular via JSON
 - Suporte a diferentes tipos de botão: `binary`, `enum`, `int`
 - Lógica realista de randomização com base em probabilidade encadeada
+- Suporte a múltiplos perfis de comportamento
 - Planejamento de checklist integrado ao sistema
 - Estratégia de limpeza automática de logs ao encerrar o simulador

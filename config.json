@@ -2,17 +2,55 @@
     "original_state_path": "assets/COLDDARK-original.sav",
     "modified_state_path": "assets/COLDDARK-copia.sav",
     "final_state_path": "TO_BE_DEFINED",
-    "modification_probability": 1,
-    "max_buttons_to_modify": 8,
-    "modification_probability_chain": {
-        "1": 0.5,
-        "2": 0.4,
-        "3": 0.3,
-        "4": 0.2,
-        "5": 0.1,
-        "6": 0.05,
-        "7": 0.02,
-        "8": 0.01
+    "selected_profile": "natural",
+    "probability_profiles":{
+        "casual": {
+          "description": "Perfil leve, ideal para iniciantes. Modificações sutis e ocasionais.",
+          "modification_probability_chain": {
+            "1": 0.3,
+            "2": 0.1,
+            "3": 0.05
+          }
+        },
+        "natural": {
+          "description": "Perfil realista. Simula pequenas falhas ou descuidos plausíveis da tripulação anterior.",
+          "modification_probability_chain": {
+            "1": 0.5,
+            "2": 0.4,
+            "3": 0.3,
+            "4": 0.2,
+            "5": 0.1,
+            "6": 0.05,
+            "7": 0.02,
+            "8": 0.01
+          }
+        },
+        "avancado": {
+          "description": "Perfil mais desafiador. Exige atenção extra do piloto na preparação da cabine.",
+          "modification_probability_chain": {
+            "1": 1,
+            "2": 0.8,
+            "3": 0.6,
+            "4": 0.5,
+            "5": 0.35,
+            "6": 0.25,
+            "7": 0.15,
+            "8": 0.1
+          }
+        },
+        "caotico": {
+          "description": "Perfil insano. Como se a manutenção tivesse feito tudo errado. Altíssima aleatoriedade.",
+          "modification_probability_chain": {
+            "1": 1,
+            "2": 1,
+            "3": 1,
+            "4": 1,
+            "5": 1,
+            "6": 1,
+            "7": 0.6,
+            "8": 0.3
+          }
+        }
     },
     "recommended_buttons": [
       { "name": "Passenger Oxygen Switch", "type": "binary" },

@@ -30,10 +30,7 @@ ORIGINAL_STATE_PATH = os.path.join(BASE_DIR, config["original_state_path"])
 MODIFIED_STATE_PATH = os.path.join(BASE_DIR, config["modified_state_path"])
 FINAL_STATE_PATH = config["final_state_path"]
 
-# Novas configs de modificação
 BUTTONS = config.get("recommended_buttons", [])
-PROBABILITY_CHAIN = config.get("modification_probability_chain", {})
-MAX_BUTTONS_TO_MODIFY = config.get("max_buttons_to_modify", 8)
 
 def read_state_file(file_path):
     with open(file_path, "r") as file:
@@ -80,10 +77,7 @@ def modify_state(lines):
     modified_count = 0
     changes_log = []
 
-    # Aplica a lógica encadeada
-    num_modifications = get_number_of_modifications(PROBABILITY_CHAIN)
-    num_modifications = min(num_modifications, MAX_BUTTONS_TO_MODIFY, len(BUTTONS))
-
+    num_modifications = min(get_number_of_modifications(), len(BUTTONS))
     if num_modifications == 0:
         modifier_logger.info("🎲 Sorteio não selecionou nenhuma modificação.")
         return lines
