@@ -6,11 +6,11 @@ import sys
 import logging
 from utils.modifier_probability import get_number_of_modifications
 
-# Caminho base fora do Program Files
+# Base path outside Program Files
 BASE_DIR = os.path.join(os.environ["LOCALAPPDATA"], "MSFSStateModifier")
 os.makedirs(BASE_DIR, exist_ok=True)
 
-# Configurar log de modificação
+# Setup modification log
 log_file = os.path.join(BASE_DIR, "modification.log")
 modifier_logger = logging.getLogger("state_modifier_logger")
 modifier_logger.setLevel(logging.INFO)
@@ -21,11 +21,11 @@ if not modifier_logger.handlers:
     handler.setFormatter(formatter)
     modifier_logger.addHandler(handler)
 
-# Carrega configurações
+# Load configuration
 with open(os.path.join(BASE_DIR, "config.json"), "r") as file:
     config = json.load(file)
 
-# Caminhos dos arquivos de estado
+# State file paths
 ORIGINAL_STATE_PATH = os.path.join(BASE_DIR, config["original_state_path"])
 MODIFIED_STATE_PATH = os.path.join(BASE_DIR, config["modified_state_path"])
 FINAL_STATE_PATH = config["final_state_path"]
@@ -79,7 +79,7 @@ def modify_state(lines):
 
     num_modifications = min(get_number_of_modifications(), len(BUTTONS))
     if num_modifications == 0:
-        modifier_logger.info("🎲 Sorteio não selecionou nenhuma modificação.")
+        modifier_logger.info("🎲 Randomizer selected no changes.")
         return lines
 
     buttons_to_modify = random.sample(BUTTONS, num_modifications)
@@ -90,17 +90,17 @@ def modify_state(lines):
             if line.startswith(button_name + "="):
                 key, value = line.strip().split("=")
                 new_value = get_random_value(button, value)
-                print(f"🔍 [{key}] valor atual: {repr(value)} | 🔁 Novo valor calculado {new_value}")
+                print(f"🔍 [{key}] current value: {repr(value)} | 🔁 New value: {new_value}")
                 lines_copy[i] = f"{key}={new_value}\n"
                 changes_log.append(f"{key}: {value} → {new_value}")
                 modified_count += 1
                 break
 
     if changes_log:
-        modifier_logger.info("---- Nova execução do modificador ----")
+        modifier_logger.info("---- New state modification ----")
         for change in changes_log:
             modifier_logger.info(f"{change}")
-        modifier_logger.info(f"Total de alterações: {modified_count}")
+        modifier_logger.info(f"Total changes: {modified_count}")
 
     return lines_copy
 
@@ -111,10 +111,10 @@ def main():
     if modified_lines != original_lines:
         write_state_file(MODIFIED_STATE_PATH, modified_lines)
         shutil.copy(MODIFIED_STATE_PATH, FINAL_STATE_PATH)
-        modifier_logger.info(f"Modificações aplicadas e copiadas para: {FINAL_STATE_PATH}")
+        modifier_logger.info(f"Changes applied and copied to: {FINAL_STATE_PATH}")
     else:
         shutil.copy(ORIGINAL_STATE_PATH, FINAL_STATE_PATH)
-        modifier_logger.info("Estado original mantido (nenhuma alteração feita).")
+        modifier_logger.info("Original state preserved (no changes applied).")
 
 if __name__ == "__main__":
     main()
