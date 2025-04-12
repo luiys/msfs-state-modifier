@@ -17,13 +17,14 @@ O **MSFSStateModifier** é um sistema desenvolvido em **Python** para o **Micros
     - `enum`: múltiplos valores fixos (ex: `Off`, `Auto`, `On`)
     - `int`: intervalo de inteiros definidos por `min` e `max`
 
-- 🧩 **Perfis de randomização prontos**
-  - Perfis ajustáveis no `config.json` com níveis de complexidade distintos:
+- 🧩 **Perfis de nível de realismo prontos**
+  - Perfis ajustáveis no `config.json`, com diferentes níveis de realismo:
     - `casual`: alterações leves e esporádicas
     - `natural`: comportamento realista de descuidos da tripulação
     - `avancado`: situações mais exigentes e frequentes
     - `caotico`: ambiente altamente imprevisível e desafiador
   - O perfil ativo é definido pela chave `selected_profile`.
+  - A interface gráfica permite trocar o perfil em tempo real (via dropdown), atualizando automaticamente o `config.json`.
 
 - 🛫 **Monitoramento de voo via SimConnect**
   - Observa a variável `GROUND_ALTITUDE`:
@@ -44,8 +45,9 @@ O **MSFSStateModifier** é um sistema desenvolvido em **Python** para o **Micros
   - Tanto o PowerShell quanto o `.exe` principal executam de forma invisível ao usuário, sem ocupar a barra de tarefas.
 
 - 🖼️ **Interface gráfica mínima**
-  - Ícone na bandeja do sistema (system tray)
-  - Janela pode ser exibida ao clicar no ícone
+  - Ícone na bandeja do sistema
+  - Janela com botão "Randomizar agora"
+  - Dropdown para trocar o nível de realismo em tempo real
 
 - 📁 **Arquivos e configuração fora do Program Files**
   - Usa `%LOCALAPPDATA%\MSFSStateModifier` para evitar erros de permissão
@@ -108,5 +110,6 @@ O **MSFSStateModifier** é um sistema desenvolvido em **Python** para o **Micros
 - Suporte a diferentes tipos de botão: `binary`, `enum`, `int`
 - Lógica realista de randomização com base em probabilidade encadeada
 - Suporte a múltiplos perfis de comportamento
+- Interface com troca dinâmica de perfil de realismo  
 - Planejamento de checklist integrado ao sistema
 - Estratégia de limpeza automática de logs ao encerrar o simulador
