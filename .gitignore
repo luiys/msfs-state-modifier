@@ -27,9 +27,6 @@ TO_BE_DEFINED
 # Arquivos do PowerShell (se não forem parte essencial do repositório)
 # watch-msfs.ps1
 
-# Evitar versionar DLLs se forem geradas ou redistribuídas
-SimConnect.dll
-
 # PyInstaller localpycs
 **/localpycs/
 
