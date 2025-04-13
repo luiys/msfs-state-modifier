@@ -1,0 +1,23 @@
+name: Sign Installer
+
+on:
+  push:
+    tags:
+      - 'v*'  # Quando você criar um tag tipo v1.0.0
+
+jobs:
+  sign:
+    name: Sign with SignPath
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Upload and sign
+        uses: SignPath/github-action@v0.2.1
+        with:
+          organization-id: 762618d2-1286-4a19-9708-36a62ba19a95
+          project-slug: msfsstatemodifier
+          signing-policy-slug: default-signing-policy
+          artifact: dist/Setup_MSFS_State_Modifier.exe
+          token: ${{ secrets.SIGNPATH_TOKEN }}
