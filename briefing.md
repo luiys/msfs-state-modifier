@@ -95,21 +95,3 @@ O **MSFSStateModifier** é um sistema desenvolvido em **Python** para o **Micros
 5. **Integração com clima ou aeroporto de origem**
    - Randomizar com base em METAR ou ICAO
 
----
-
-## Diferenciais em relação ao concorrente
-(Como o "PMDG 737-700 Panel Randomiser" do flightsim.to)
-
-- Suporte a múltiplos modelos PMDG (ex: 737-800, 737-900)
-- Randomização automática com base no carregamento do simulador
-- Integração nativa com SimConnect
-- Execução automática com o Windows
-- Ocultação completa (PowerShell e EXE)
-- Interface em bandeja do sistema
-- Estrutura de configuração modular via JSON
-- Suporte a diferentes tipos de botão: `binary`, `enum`, `int`
-- Lógica realista de randomização com base em probabilidade encadeada
-- Suporte a múltiplos perfis de comportamento
-- Interface com troca dinâmica de perfil de realismo  
-- Planejamento de checklist integrado ao sistema
-- Estratégia de limpeza automática de logs ao encerrar o simulador
