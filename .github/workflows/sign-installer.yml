@@ -1,20 +1,41 @@
-name: Sign Installer
+name: Build and Sign Installer
 
 on:
   push:
     tags:
-      - 'v*'  # Quando você criar um tag tipo v1.0.0
+      - 'v*'  # Ex: v1.0.0, v0.9.3 etc.
 
 jobs:
-  sign:
-    name: Sign with SignPath
-    runs-on: ubuntu-latest
+  build-sign:
+    name: Build and Sign Installer
+    runs-on: windows-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-      - name: Upload and sign
-        uses: SignPath/github-action@v0.2.1
+      - name: Set up Python 3.13
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      - name: Install PyInstaller
+        run: pip install pyinstaller
+
+      - name: Build executable with PyInstaller
+        run: pyinstaller main.spec
+
+      - name: Install Inno Setup
+        run: choco install innosetup --no-progress
+
+      - name: Compile installer with Inno Setup
+        run: '"C:\Program Files (x86)\Inno Setup 6\ISCC.exe" installer.iss'
+
+      - name: Sign installer with SignPath
+        uses: SignPath/github-action@v0.2.0
         with:
           organization-id: 762618d2-1286-4a19-9708-36a62ba19a95
           project-slug: msfsstatemodifier
