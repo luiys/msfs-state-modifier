@@ -3,42 +3,46 @@ name: Build and Sign Installer
 on:
   push:
     tags:
-      - 'v*'  # Ex: v1.0.0, v0.9.3 etc.
+      - 'v*'  # Ex: v1.0.0
 
 jobs:
   build-sign:
-    name: Build and Sign Installer
     runs-on: windows-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Set up Python 3.13
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.13'
 
-      - name: Install Python dependencies
+      - name: Install dependencies
         run: pip install -r requirements.txt
-
-      - name: Install PyInstaller
-        run: pip install pyinstaller
 
       - name: Build executable with PyInstaller
         run: pyinstaller main.spec
 
-      - name: Install Inno Setup
-        run: choco install innosetup --no-progress
-
       - name: Compile installer with Inno Setup
-        run: '"C:\Program Files (x86)\Inno Setup 6\ISCC.exe" installer.iss'
+        run: |
+          iscc installer.iss
+        shell: cmd
 
-      - name: Sign installer with SignPath
-        uses: SignPath/github-actions@v0.2.0
+      - name: Upload unsigned installer artifact
+        id: upload-unsigned-artifact
+        uses: actions/upload-artifact@v4
         with:
-          organization-id: 762618d2-1286-4a19-9708-36a62ba19a95
-          project-slug: msfsstatemodifier
-          signing-policy-slug: default-signing-policy
-          artifact: dist/Setup_MSFS_State_Modifier.exe
-          token: ${{ secrets.SIGNPATH_TOKEN }}
+          path: dist/Setup_MSFS_State_Modifier.exe
+
+      - name: Submit to SignPath for signing
+        id: signpath-sign
+        uses: SignPath/github-actions/github-action-submit-signing-request@v1.1
+        with:
+          api-token: '${{ secrets.SIGNPATH_API_TOKEN }}'
+          organization-id: '762618d2-1286-4a19-9708-36a62ba19a95'
+          project-slug: 'msfsstatemodifier'
+          signing-policy-slug: 'default-signing-policy'
+          github-artifact-id: '${{ steps.upload-unsigned-artifact.outputs.artifact-id }}'
+          wait-for-completion: true
+          output-artifact-directory: 'signed-output'
