@@ -42,7 +42,7 @@ jobs:
           api-token: '${{ secrets.SIGNPATH_API_TOKEN }}'
           organization-id: '762618d2-1286-4a19-9708-36a62ba19a95'
           project-slug: 'msfsstatemodifier'
-          signing-policy-slug: 'default-signing-policy'
+          signing-policy-slug: 'flightsim.to'
           github-artifact-id: '${{ steps.upload-unsigned-artifact.outputs.artifact-id }}'
           wait-for-completion: true
           output-artifact-directory: 'signed-output'
