@@ -35,7 +35,7 @@ jobs:
         run: '"C:\Program Files (x86)\Inno Setup 6\ISCC.exe" installer.iss'
 
       - name: Sign installer with SignPath
-        uses: SignPath/github-action@v0.2.0
+        uses: SignPath/github-actions@v0.2.0
         with:
           organization-id: 762618d2-1286-4a19-9708-36a62ba19a95
           project-slug: msfsstatemodifier
