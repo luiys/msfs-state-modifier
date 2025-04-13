@@ -1,6 +1,6 @@
 # Diretórios gerados por PyInstaller
 build/
-dist/
+dist/*.exe
 
 # Cache do Python
 __pycache__/

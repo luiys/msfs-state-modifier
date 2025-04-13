@@ -1,0 +1,102 @@
+{
+    "original_state_path": "assets/COLDDARK-original.sav",
+    "modified_state_path": "assets/COLDDARK-copia.sav",
+    "final_state_path": "TO_BE_DEFINED",
+    "selected_profile": "realistic",
+    "probability_profiles": {
+      "casual": {
+        "description": "Light profile, ideal for beginners. Subtle and occasional modifications.",
+        "modification_probability_chain": {
+          "1": 0.3,
+          "2": 0.1,
+          "3": 0.05
+        }
+      },
+      "realistic": {
+        "description": "Realistic profile. Simulates minor issues or plausible crew oversights.",
+        "modification_probability_chain": {
+          "1": 0.5,
+          "2": 0.4,
+          "3": 0.3,
+          "4": 0.2,
+          "5": 0.1,
+          "6": 0.05,
+          "7": 0.02,
+          "8": 0.01
+        }
+      },
+      "advanced": {
+        "description": "Challenging profile. Requires extra attention from the pilot during cockpit setup.",
+        "modification_probability_chain": {
+          "1": 1,
+          "2": 0.8,
+          "3": 0.6,
+          "4": 0.5,
+          "5": 0.35,
+          "6": 0.25,
+          "7": 0.15,
+          "8": 0.1
+        }
+      },
+      "chaotic": {
+        "description": "Insane profile. As if maintenance did everything wrong. Extremely high randomness.",
+        "modification_probability_chain": {
+          "1": 1,
+          "2": 1,
+          "3": 1,
+          "4": 1,
+          "5": 1,
+          "6": 1,
+          "7": 0.6,
+          "8": 0.3
+        }
+      }
+    },
+    "recommended_buttons": [
+      { "name": "Passenger Oxygen Switch", "type": "binary" },
+      { "name": "Wing AntiIce Switch", "type": "binary" },
+      { "name": "R Wiper Control", "type": "int", "min": 0, "max": 3 },
+      { "name": "L Wiper Control", "type": "int", "min": 0, "max": 3 },
+      { "name": "Yaw Damper Switch", "type": "binary" },
+      { "name": "Window Heat Switch 1", "type": "binary" },
+      { "name": "Window Heat Switch 2", "type": "binary" },
+      { "name": "Window Heat Switch 3", "type": "binary" },
+      { "name": "Window Heat Switch 4", "type": "binary" },
+      { "name": "Probe Heat Switch 1", "type": "binary" },
+      { "name": "Probe Heat Switch 2", "type": "binary" },
+      { "name": "Engine AntiIce Switch", "type": "binary" },
+      { "name": "Engine AntiIce Switch 2", "type": "binary" },
+      { "name": "Eng Pump Switch A", "type": "binary" },
+      { "name": "Eng Pump Switch B", "type": "binary" },
+      { "name": "Elec Pump Switch A", "type": "binary" },
+      { "name": "Elec Pump Switch B", "type": "binary" },
+      { "name": "Pack Switch L", "type": "binary" },
+      { "name": "Pack Switch R", "type": "binary" },
+      { "name": "Bleed Air Switch L", "type": "binary" },
+      { "name": "Bleed Air Switch R", "type": "binary" },
+      { "name": "APU Bleed Air Switch", "type": "binary" },
+      { "name": "Isolation Valve Switch", "type": "int", "min": 0, "max": 2 },
+      { "name": "Cabin Press Mode Selector", "type": "int", "min": 0, "max": 2 },
+      { "name": "Wing Light", "type": "binary" },
+      { "name": "Taxi Light", "type": "binary" },
+      { "name": "Logo Light", "type": "binary" },
+      { "name": "Position Light", "type": "int", "min": 0, "max": 2 },
+      { "name": "Anti Collision Light", "type": "binary" },
+      { "name": "Wheel Well Light", "type": "binary" },
+      { "name": "Show Meters", "type": "binary" },
+      { "name": "Captain Right Armrest", "type": "binary" },
+      { "name": "Parking Brake Lever", "type": "binary" },
+      { "name": "Xpndr", "type": "int", "min": 0, "max": 4 },
+      { "name": "Autobrakes Selector", "type": "int", "min": 0, "max": 5 },
+      { "name": "Pump Switch 1 Fwd", "type": "binary" },
+      { "name": "Pump Switch 2 Fwd", "type": "binary" },
+      { "name": "Pump Switch 1 Aft", "type": "binary" },
+      { "name": "Pump Switch 2 Aft", "type": "binary" },
+      { "name": "Pump Switch Left Center", "type": "binary" },
+      { "name": "Pump Switch Right Center", "type": "binary" },
+      { "name": "EmergencyLightsSwitch", "type": "int", "min": 0, "max": 2 },
+      { "name": "Seat Belts Switch", "type": "int", "min": 0, "max": 2 },
+      { "name": "Smoking Switch", "type": "int", "min": 0, "max": 2 }
+    ]
+  }
+  
