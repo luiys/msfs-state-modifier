@@ -39,7 +39,7 @@ jobs:
         id: signpath-sign
         uses: signpath/github-action-submit-signing-request@v1.1
         with:
-          api-token: '${{ secrets.SIGNPATH_API_TOKEN }}'
+          api-token: '${{ secrets.SIGNPATH_TOKEN }}'
           organization-id: '762618d2-1286-4a19-9708-36a62ba19a95'
           project-slug: 'msfsstatemodifier'
           signing-policy-slug: 'flightsim.to'
